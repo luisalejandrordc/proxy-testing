@@ -1,0 +1,13 @@
+# Node / Vite
+node_modules/
+frontend/node_modules/
+frontend/dist/
+*.tsbuildinfo
+
+# Go
+backend/server
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

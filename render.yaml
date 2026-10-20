@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: refresh-cookie-rewrite-lab-20261020-api
+    runtime: go
+    rootDir: backend
+    plan: free
+    buildCommand: go build -o server .
+    startCommand: ./server
+    healthCheckPath: /api/health
+    envVars:
+      - key: COOKIE_SECURE
+        value: "true"
+
+  - type: web
+    name: refresh-cookie-rewrite-lab-20261020-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: 22.16.0
+    routes:
+      # Keep this rule before the SPA fallback. Update the hostname to the exact
+      # API URL shown in the Render dashboard if Render assigns a different slug.
+      - type: rewrite
+        source: /api/*
+        destination: https://refresh-cookie-rewrite-lab-20261020-api.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
